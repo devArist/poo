@@ -34,11 +34,6 @@ class Point:
         return p
 
 
-p =Point(5,9)
-p1 =Point(3,7)
-print(p.calculermilieu(p1))
-
-
 
 
 class TroisPoint:
@@ -75,13 +70,26 @@ class TroisPoint:
         AC = self.premier.calculerdistance(self.troisieme)
         BC = self.deuxieme.calculerdistance(self.troisieme)
 
-        if AB == AC + BC:
-            return True
-        else:
-            return False
+        return AB == AC + BC or AC == AB + BC or BC == AC + AB
 
 
+    def est_isocele(self) -> bool:
+        AB = self.premier.calculerdistance(self.deuxieme)
+        AC = self.premier.calculerdistance(self.troisieme)
+        BC = self.deuxieme.calculerdistance(self.troisieme)
 
-t = TroisPoint(Point(4, 5), Point(3, 4), Point(6, 3))
+        return AB == AC  or AB == BC or BC == AC
 
-print(t.sont_alignes())
+    @staticmethod
+    def calculermilieu(p:Point, p1:Point) -> float:
+        p = Point((p.absc + p1.absc)/2, (p.order + p1.order)/2)
+        return p
+
+    @staticmethod
+    def calculerdistance(p:Point, p1:Point) -> float:
+        return sqrt(pow(p.absc - p1.absc, 2) + pow(p.order - p1.order,2))
+
+
+tp = TroisPoint(Point(8, 2), Point(5, 4), Point(2,2))
+
+print(TroisPoint.calculerdistance(tp.premier, tp.deuxieme))
