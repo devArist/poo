@@ -1,8 +1,10 @@
 class Personne:
-    def __init__(self, nom:str, sexe:str, adresses:Adresse):
+    def __init__(self, nom:str, sexe:str, adresses:list):
         self.__nom = nom
         self.__sexe = sexe
         self.__adresses = adresses
+        if not(self.__sexe == 'M' or self.__sexe == 'F'):
+            raise Exception('Input M or F for object sex')
 
     @property
     def nom(self):
@@ -22,6 +24,8 @@ class Personne:
 
     @sexe.setter
     def sexe(self, sexe):
+        if not (sexe == 'M' or sexe == 'F'):
+            raise Exception('Value of sex parameter must be M or F')
         self.__sexe = sexe
 
     @adresses.setter
@@ -47,23 +51,24 @@ class ListePersonnes:
         in parameter exists
         or not into persons list
         """
-        find = None
         for personne in self.personnes:
             if personne.nom == s:
-                find = personne
-                break
-
-            return find
+                return personne
 
     def exists_code_postal(self, cp:str) -> bool:
         for personne in self.personnes:
-            return True if personne.adresses.code_postal == cp else False
+            for adresse in personne.adresses:
+                return True
+        return False
 
     def count_personne_ville(self, ville:str) -> int:
         counter = 0
         for personne in self.personnes:
-            if personne.adresses.ville == ville:
-                count += 1
+            for adresse in personne.adresses:
+                if adresse.ville == ville:
+                    counter += 1
+                    break
+            continue
 
         return counter
 
@@ -74,5 +79,6 @@ class ListePersonnes:
 
     def edit_personne_ville(self, nom:str, newVille:str):
         for personne in self.personnes:
-            if personne.adresses.ville == nom:
-                personne.adresses.ville = newVille
+            for adresse in personne.adresses:
+                if adresse.ville == nom:
+                    adresse.ville = newVille
